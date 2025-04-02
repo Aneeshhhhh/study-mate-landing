@@ -9,13 +9,6 @@ const HeroSection = () => {
     setIsVisible(true);
   }, []);
 
-  const scrollToAbout = () => {
-    const aboutSection = document.getElementById('about');
-    if (aboutSection) {
-      aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   return (
     <section 
       id="home" 
@@ -24,19 +17,24 @@ const HeroSection = () => {
       <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
         {/* Left Column */}
         <div className={`max-w-xl ${isVisible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 typewriter">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 typewriter">
             Never Study Alone Again
           </h1>
-          <p className="text-lg text-gray-600 mb-8">
+          <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8">
             AI-matched tutors • Accountability partners • Campus friends.
           </p>
-          <div className="flex flex-wrap gap-4">
-            <Link to="/signup" className="btn-primary animate-pulse-glow">
+          <div className="flex flex-wrap gap-3 sm:gap-4">
+            <Link to="/signup" className="btn-primary animate-pulse-glow py-3 px-6 text-base sm:text-lg">
               Login/Signup
             </Link>
             <button 
-              onClick={scrollToAbout}
-              className="btn-secondary hover:scale-[1.02]"
+              onClick={() => {
+                const aboutSection = document.getElementById('about');
+                if (aboutSection) {
+                  aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+              className="btn-secondary hover:scale-[1.02] py-3 px-6 text-base sm:text-lg"
             >
               How It Works <ChevronRight className="inline ml-1" size={18} />
             </button>
@@ -45,7 +43,7 @@ const HeroSection = () => {
 
         {/* Right Column */}
         <div className={`${isVisible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000 ease-in-out delay-300 hidden md:block`}>
-          <div className="w-full h-96 bg-gradient-to-br from-secondary/20 via-accent-light/30 to-primary/20 rounded-2xl p-4 relative overflow-hidden animate-float">
+          <div className="w-full h-80 sm:h-96 bg-gradient-to-br from-secondary/20 via-accent-light/30 to-primary/20 rounded-2xl p-4 relative overflow-hidden animate-float">
             <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-secondary/30 rounded-full"></div>
             <div className="absolute top-10 left-10 w-40 h-40 bg-primary/20 rounded-full"></div>
             <div className="absolute bottom-20 left-20 w-32 h-32 bg-accent/30 rounded-full"></div>
@@ -57,17 +55,17 @@ const HeroSection = () => {
             {/* Students SVG placeholder - in a real project this would be replaced with actual SVG or 3D graphics */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="grid grid-cols-2 gap-4">
-                <div className="w-24 h-24 rounded-full bg-white shadow-lg flex items-center justify-center">
-                  <span className="text-4xl">👩‍🎓</span>
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white shadow-lg flex items-center justify-center">
+                  <span className="text-3xl sm:text-4xl">👩‍🎓</span>
                 </div>
-                <div className="w-24 h-24 rounded-full bg-white shadow-lg flex items-center justify-center">
-                  <span className="text-4xl">👨‍🎓</span>
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white shadow-lg flex items-center justify-center">
+                  <span className="text-3xl sm:text-4xl">👨‍🎓</span>
                 </div>
-                <div className="w-24 h-24 rounded-full bg-white shadow-lg flex items-center justify-center">
-                  <span className="text-4xl">👩‍💻</span>
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white shadow-lg flex items-center justify-center">
+                  <span className="text-3xl sm:text-4xl">👩‍💻</span>
                 </div>
-                <div className="w-24 h-24 rounded-full bg-white shadow-lg flex items-center justify-center">
-                  <span className="text-4xl">👨‍💻</span>
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white shadow-lg flex items-center justify-center">
+                  <span className="text-3xl sm:text-4xl">👨‍💻</span>
                 </div>
               </div>
             </div>
@@ -76,13 +74,13 @@ const HeroSection = () => {
 
         {/* Mobile only SVG */}
         <div className="md:hidden animate-float">
-          <div className="w-full h-64 bg-gradient-to-br from-secondary/20 via-accent-light/30 to-primary/20 rounded-2xl flex items-center justify-center">
+          <div className="w-full h-56 sm:h-64 bg-gradient-to-br from-secondary/20 via-accent-light/30 to-primary/20 rounded-2xl flex items-center justify-center">
             <div className="grid grid-cols-2 gap-4">
-              <div className="w-20 h-20 rounded-full bg-white shadow-lg flex items-center justify-center">
-                <span className="text-3xl">👩‍🎓</span>
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white shadow-lg flex items-center justify-center">
+                <span className="text-2xl sm:text-3xl">👩‍🎓</span>
               </div>
-              <div className="w-20 h-20 rounded-full bg-white shadow-lg flex items-center justify-center">
-                <span className="text-3xl">👨‍🎓</span>
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white shadow-lg flex items-center justify-center">
+                <span className="text-2xl sm:text-3xl">👨‍🎓</span>
               </div>
             </div>
           </div>

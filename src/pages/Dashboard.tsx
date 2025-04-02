@@ -139,7 +139,7 @@ const Dashboard = () => {
                   <span>Schedule</span>
                 </a>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
+              <DialogContent className="sm:max-w-[500px] w-[95vw] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>Your Schedule</DialogTitle>
                 </DialogHeader>
@@ -174,7 +174,7 @@ const Dashboard = () => {
                   <span>Messages</span>
                 </a>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
+              <DialogContent className="sm:max-w-[500px] w-[95vw] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>
                     {showMessageBox && selectedUser ? (
@@ -262,20 +262,20 @@ const Dashboard = () => {
                   <span>Profile</span>
                 </a>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
+              <DialogContent className="sm:max-w-[500px] w-[95vw] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>Your Profile</DialogTitle>
                 </DialogHeader>
                 <div className="py-4">
                   <div className="space-y-4">
                     <div className="flex items-center justify-center mb-6">
-                      <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center">
-                        <User className="w-12 h-12 text-primary" />
+                      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-primary/20 flex items-center justify-center">
+                        <User className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="col-span-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="col-span-1 sm:col-span-2">
                         <h3 className="text-lg font-medium">{name || "User"}</h3>
                         <p className="text-sm text-gray-500">{email || "No email provided"}</p>
                       </div>
@@ -300,12 +300,12 @@ const Dashboard = () => {
                         <p className="font-medium">{role || "Not specified"}</p>
                       </div>
                       
-                      <div className="col-span-2">
+                      <div className="col-span-1 sm:col-span-2">
                         <p className="text-sm text-gray-500">Student Type</p>
                         <p className="font-medium">{studentType || "Not specified"}</p>
                       </div>
                       
-                      <div className="col-span-2">
+                      <div className="col-span-1 sm:col-span-2">
                         <p className="text-sm text-gray-500">Interests</p>
                         <div className="flex flex-wrap gap-2 mt-1">
                           {interests && interests.length > 0 ? (
@@ -335,197 +335,199 @@ const Dashboard = () => {
           </div>
           
           {/* Mobile menu button */}
-          <button className="md:hidden text-gray-600 hover:text-primary focus:outline-none">
+          <button className="md:hidden text-gray-600 hover:text-primary focus:outline-none p-2">
             <Menu size={24} />
           </button>
         </div>
       </nav>
       
       {/* Main Content */}
-      <div className="container mx-auto pt-24 pb-12 px-4">
-        {/* Welcome Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Welcome back, {userName}!</h1>
-          <p className="text-gray-600">Ready to connect and learn today?</p>
+      <main className="container mx-auto px-4 pt-24 pb-12">
+        {/* Welcome Section */}
+        <div className="mb-12">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">Welcome back, {userName}!</h1>
+          <p className="text-gray-600">Here's what's happening with your study sessions today.</p>
         </div>
-        
+
         {/* Search Bar */}
-        <div className="relative max-w-md mb-10">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <Input
-            type="text"
-            placeholder="Search for students, tutors, or subjects..."
-            className="pl-10 pr-4 py-2 rounded-lg border-gray-300 w-full"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSearch();
-              }
-            }}
-          />
-          <Button 
-            className="absolute right-2 top-1/2 transform -translate-y-1/2"
-            size="sm"
-            onClick={handleSearch}
-          >
-            Search
-          </Button>
+        <div className="mb-8">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <Input
+              type="text"
+              placeholder="Search for tutors, study buddies, or campus partners..."
+              className="pl-10 pr-4 py-3 rounded-lg border-gray-300 w-full text-base"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            />
+            <Button 
+              className="absolute right-2 top-1/2 transform -translate-y-1/2"
+              onClick={handleSearch}
+            >
+              Search
+            </Button>
+          </div>
         </div>
-        
-        {/* Student Dashboard */}
-        {isStudent ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BookOpen className="h-5 w-5 text-primary" />
+                Find a Tutor
+              </CardTitle>
+              <CardDescription>
+                Connect with expert tutors in your subjects.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600 mb-4">
+                Get personalized help from qualified tutors who can guide you through difficult concepts.
+              </p>
+            </CardContent>
+            <CardFooter>
+              <Button 
+                className="w-full"
+                onClick={() => navigate('/search-tutors')}
+              >
+                Find Tutors
+              </Button>
+            </CardFooter>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5 text-primary" />
+                Find a Study Buddy
+              </CardTitle>
+              <CardDescription>
+                Connect with peers for collaborative learning.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600 mb-4">
+                Find study partners who share your academic interests and learning style.
+              </p>
+            </CardContent>
+            <CardFooter>
+              <Button 
+                className="w-full"
+                onClick={() => navigate('/search-buddies')}
+              >
+                Match Now
+              </Button>
+            </CardFooter>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Users className="h-5 w-5 text-primary" />
+                Find a Campus Partner
+              </CardTitle>
+              <CardDescription>
+                Connect for activities and events.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600 mb-4">
+                Find partners for campus activities, sports, and social events.
+              </p>
+            </CardContent>
+            <CardFooter>
+              <Button 
+                className="w-full"
+                onClick={() => navigate('/search-partners')}
+              >
+                Find Partners
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="mb-12">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4">Recent Activity</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BookOpen className="h-5 w-5 text-primary" />
-                  Find a Tutor
-                </CardTitle>
-                <CardDescription>Get help with difficult subjects</CardDescription>
+                <CardTitle className="text-base sm:text-lg">Upcoming Study Session</CardTitle>
+                <CardDescription>
+                  <p className="text-sm text-gray-600">Tomorrow at 2:00 PM</p>
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-gray-600">
-                  Connect with expert tutors who specialize in your subjects.
-                </p>
+                <p className="text-sm">Python Programming with Aneesh Puranik</p>
               </CardContent>
               <CardFooter>
-                <Button 
-                  className="w-full bg-primary hover:bg-primary/90 text-white"
-                  onClick={() => navigate('/search-tutors')}
-                >
-                  Find Tutors
-                </Button>
+                <Button variant="outline" className="w-full">View Details</Button>
               </CardFooter>
             </Card>
-            
-            <Card className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+
+            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-primary" />
-                  Find a Study Buddy
-                </CardTitle>
-                <CardDescription>Study together and stay motivated</CardDescription>
+                <CardTitle className="text-base sm:text-lg">New Message</CardTitle>
+                <CardDescription>
+                  <p className="text-sm text-gray-600">From Aryan Tambe</p>
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-gray-600">
-                  Find peers with similar interests and academic goals.
-                </p>
+                <p className="text-sm">Hey! Are you free to study React this weekend?</p>
               </CardContent>
               <CardFooter>
-                <Button 
-                  className="w-full bg-primary hover:bg-primary/90 text-white"
-                  onClick={() => navigate('/search-buddies')}
-                >
-                  Match Now
-                </Button>
+                <Button variant="outline" className="w-full">Reply</Button>
               </CardFooter>
             </Card>
-            
-            <Card className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+
+            <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-primary" />
-                  Find a Campus Partner
-                </CardTitle>
-                <CardDescription>Connect for activities and events</CardDescription>
+                <CardTitle className="text-base sm:text-lg">Campus Event</CardTitle>
+                <CardDescription>
+                  <p className="text-sm text-gray-600">This Saturday</p>
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-gray-600">
-                  Find partners for sports, clubs, and campus activities.
-                </p>
+                <p className="text-sm">Cricket match with Om Kute and friends</p>
               </CardContent>
               <CardFooter>
-                <Button 
-                  className="w-full bg-primary hover:bg-primary/90 text-white"
-                  onClick={() => navigate('/search-partners')}
-                >
-                  Find Partners
-                </Button>
-              </CardFooter>
-            </Card>
-            
-            <Card className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Upload className="h-5 w-5 text-primary" />
-                  Upload PDF
-                </CardTitle>
-                <CardDescription>Get AI-powered study materials</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-600">
-                  Upload your lecture notes or syllabus for an AI summary and quiz.
-                </p>
-              </CardContent>
-              <CardFooter>
-                <Button onClick={handleUploadPDF} className="w-full bg-primary hover:bg-primary/90 text-white">
-                  Upload Document
-                </Button>
+                <Button variant="outline" className="w-full">Join Event</Button>
               </CardFooter>
             </Card>
           </div>
-        ) : (
-          /* Tutor Dashboard */
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Your Tutoring History</CardTitle>
-                <CardDescription>Recent tutoring sessions</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      <tr>
-                        <td className="px-6 py-4 whitespace-nowrap">Alex Johnson</td>
-                        <td className="px-6 py-4 whitespace-nowrap">Python</td>
-                        <td className="px-6 py-4 whitespace-nowrap">June 12, 2025</td>
-                        <td className="px-6 py-4 whitespace-nowrap">45 min</td>
-                      </tr>
-                      <tr>
-                        <td className="px-6 py-4 whitespace-nowrap">Maria Garcia</td>
-                        <td className="px-6 py-4 whitespace-nowrap">React</td>
-                        <td className="px-6 py-4 whitespace-nowrap">June 10, 2025</td>
-                        <td className="px-6 py-4 whitespace-nowrap">60 min</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Student Requests</CardTitle>
-                <CardDescription>Pending tutoring requests</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                    <div>
-                      <h4 className="font-medium">James Wilson</h4>
-                      <p className="text-sm text-gray-600">Java programming help - 30 min</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">Decline</Button>
-                      <Button size="sm" className="bg-primary hover:bg-primary/90 text-white">Accept</Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-      </div>
+        </div>
+
+        {/* Upload Section */}
+        <div>
+          <h2 className="text-xl sm:text-2xl font-bold mb-4">Upload Study Materials</h2>
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Upload className="h-5 w-5 text-primary" />
+                Upload PDF
+              </CardTitle>
+              <CardDescription>
+                Upload your study materials for AI-powered analysis.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-600 mb-4">
+                Our AI will analyze your study materials and provide personalized recommendations.
+              </p>
+            </CardContent>
+            <CardFooter>
+              <Button 
+                className="w-full"
+                onClick={handleUploadPDF}
+              >
+                Upload PDF
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      </main>
     </div>
   );
 };
