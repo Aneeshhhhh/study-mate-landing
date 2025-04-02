@@ -1,5 +1,6 @@
 
 import { Suspense, lazy, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import FeaturesSection from "@/components/FeaturesSection";
@@ -57,10 +58,37 @@ const Index = () => {
       lazyLoadImages();
     }
 
+    // Easter egg for hackathon judges
+    console.log("🏆 Built for Hackathon Challenge by Team StudySync");
+
     // Clean up event listeners
     return () => {
       window.removeEventListener('load', handleHashLinkClick);
     };
+  }, []);
+
+  // Update hero section buttons to link to signup/login
+  const updateHeroButtons = () => {
+    const findMatchBtn = document.querySelector('.btn-primary');
+    const howItWorksBtn = document.querySelector('.btn-secondary');
+    
+    if (findMatchBtn) {
+      findMatchBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = '/signup';
+      });
+    }
+    
+    if (howItWorksBtn) {
+      howItWorksBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = '#features';
+      });
+    }
+  };
+
+  useEffect(() => {
+    updateHeroButtons();
   }, []);
 
   return (

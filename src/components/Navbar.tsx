@@ -1,79 +1,83 @@
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
 
-  // Easter egg comment for hackathon judges
-  // <!-- 🚀 Built for Hackathon Challenge by Team StudySync -->
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    setIsMenuOpen(false);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
   return (
-    <header className={`fixed-navbar transition-all duration-300 ${isScrolled ? 'py-3' : 'py-5'}`}>
-      <div className="container mx-auto flex justify-between items-center px-4">
-        <a href="#" className="text-2xl font-bold gradient-text">StudySync</a>
-        
+    <nav className="fixed-navbar">
+      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+        {/* Logo */}
+        <Link to="/" className="text-xl font-bold gradient-text">
+          StudySync
+        </Link>
+
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-2">
-          <a onClick={() => scrollToSection('home')} className="nav-link cursor-pointer">Home</a>
-          <a onClick={() => scrollToSection('features')} className="nav-link cursor-pointer">Features</a>
-          <a onClick={() => scrollToSection('about')} className="nav-link cursor-pointer">About</a>
-          <a onClick={() => scrollToSection('contact')} className="nav-link cursor-pointer">Contact</a>
-        </nav>
-        
-        <div className="hidden md:block">
-          <button className="btn-primary hover:animate-pulse-glow">Login / Signup</button>
+        <div className="hidden md:flex space-x-6">
+          <Link to="/" className="nav-link">
+            Home
+          </Link>
+          <a href="#features" className="nav-link">
+            Features
+          </a>
+          <a href="#about" className="nav-link">
+            About
+          </a>
+          <a href="#contact" className="nav-link">
+            Contact
+          </a>
         </div>
-        
+
+        {/* Auth Buttons */}
+        <div className="hidden md:flex space-x-4">
+          <Link to="/login" className="btn-secondary">
+            Log In
+          </Link>
+          <Link to="/signup" className="btn-primary">
+            Sign Up
+          </Link>
+        </div>
+
         {/* Mobile Menu Button */}
-        <button 
-          className="md:hidden text-gray-800"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        <button
+          onClick={toggleMenu}
+          className="md:hidden text-gray-600 hover:text-primary focus:outline-none"
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="absolute top-full left-0 w-full bg-white shadow-md rounded-b-md overflow-hidden z-50">
+            <div className="px-6 py-4 flex flex-col space-y-3">
+              <Link to="/" className="block nav-link">
+                Home
+              </Link>
+              <a href="#features" className="block nav-link">
+                Features
+              </a>
+              <a href="#about" className="block nav-link">
+                About
+              </a>
+              <a href="#contact" className="block nav-link">
+                Contact
+              </a>
+              <Link to="/login" className="block btn-secondary">
+                Log In
+              </Link>
+              <Link to="/signup" className="block btn-primary">
+                Sign Up
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
-      
-      {/* Mobile Menu Overlay */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 bg-white/90 backdrop-blur-lg z-50 animate-fade-in flex flex-col justify-center items-center">
-          <button 
-            className="absolute top-6 right-6 text-gray-800"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            <X size={28} />
-          </button>
-          
-          <nav className="flex flex-col items-center space-y-6 mb-10">
-            <a onClick={() => scrollToSection('home')} className="text-2xl font-semibold text-gray-800 hover:text-primary transition-colors">Home</a>
-            <a onClick={() => scrollToSection('features')} className="text-2xl font-semibold text-gray-800 hover:text-primary transition-colors">Features</a>
-            <a onClick={() => scrollToSection('about')} className="text-2xl font-semibold text-gray-800 hover:text-primary transition-colors">About</a>
-            <a onClick={() => scrollToSection('contact')} className="text-2xl font-semibold text-gray-800 hover:text-primary transition-colors">Contact</a>
-          </nav>
-          
-          <button className="btn-primary text-lg w-64">Login / Signup</button>
-        </div>
-      )}
-    </header>
+    </nav>
   );
 };
 

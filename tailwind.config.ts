@@ -91,13 +91,17 @@ export default {
 				'card-tilt': {
 					'0%, 100%': { transform: 'perspective(500px) rotateX(0deg) rotateY(0deg)' },
 					'50%': { transform: 'perspective(500px) rotateX(5deg) rotateY(5deg)' }
+				},
+				'cursor-blink': {
+					'0%, 100%': { borderColor: 'transparent' },
+					'50%': { borderColor: 'currentColor' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'typewriter': 'typewriter 3s steps(40) forwards',
-				'cursor-blink': 'blink 1s step-end infinite',
+				'cursor-blink': 'cursor-blink 1s step-end infinite',
 				'fade-in': 'fade-in 0.7s ease-out forwards',
 				'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
 				'float': 'float 3s ease-in-out infinite',

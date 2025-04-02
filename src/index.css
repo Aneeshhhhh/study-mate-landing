@@ -104,4 +104,10 @@
     from { width: 0; }
     to { width: 100%; }
   }
+  
+  @keyframes cursor-blink {
+    0%, 100% { border-color: transparent; }
+    50% { border-color: currentColor; }
+  }
 }
+
