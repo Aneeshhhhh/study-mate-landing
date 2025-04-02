@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   BookOpen, Users, Upload, Search, Bell, LogOut, MessageSquare,
-  Calendar, User, X, ArrowLeft
+  Calendar, User, X, ArrowLeft, Menu
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,11 +16,12 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
-  const { name } = useSignup();
+  const { name, age, gender, degree, email, interests, role, studentType } = useSignup();
   const [userName, setUserName] = useState("there");
   const [messageText, setMessageText] = useState("");
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isMessageOpen, setIsMessageOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [messageSearchQuery, setMessageSearchQuery] = useState("");
   const [selectedUser, setSelectedUser] = useState<{id: number, name: string, image: string} | null>(null);
   const [showMessageBox, setShowMessageBox] = useState(false);
@@ -254,28 +255,89 @@ const Dashboard = () => {
               </DialogContent>
             </Dialog>
             
-            <a href="#" className="nav-link flex items-center gap-2">
-              <User className="w-4 h-4" />
-              <span>Profile</span>
+            <Dialog open={isProfileOpen} onOpenChange={setIsProfileOpen}>
+              <DialogTrigger asChild>
+                <a href="#" className="nav-link flex items-center gap-2">
+                  <User className="w-4 h-4" />
+                  <span>Profile</span>
+                </a>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[500px]">
+                <DialogHeader>
+                  <DialogTitle>Your Profile</DialogTitle>
+                </DialogHeader>
+                <div className="py-4">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-center mb-6">
+                      <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center">
+                        <User className="w-12 h-12 text-primary" />
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="col-span-2">
+                        <h3 className="text-lg font-medium">{name || "User"}</h3>
+                        <p className="text-sm text-gray-500">{email || "No email provided"}</p>
+                      </div>
+                      
+                      <div>
+                        <p className="text-sm text-gray-500">Age</p>
+                        <p className="font-medium">{age || "Not specified"}</p>
+                      </div>
+                      
+                      <div>
+                        <p className="text-sm text-gray-500">Gender</p>
+                        <p className="font-medium">{gender || "Not specified"}</p>
+                      </div>
+                      
+                      <div>
+                        <p className="text-sm text-gray-500">Degree</p>
+                        <p className="font-medium">{degree || "Not specified"}</p>
+                      </div>
+                      
+                      <div>
+                        <p className="text-sm text-gray-500">Role</p>
+                        <p className="font-medium">{role || "Not specified"}</p>
+                      </div>
+                      
+                      <div className="col-span-2">
+                        <p className="text-sm text-gray-500">Student Type</p>
+                        <p className="font-medium">{studentType || "Not specified"}</p>
+                      </div>
+                      
+                      <div className="col-span-2">
+                        <p className="text-sm text-gray-500">Interests</p>
+                        <div className="flex flex-wrap gap-2 mt-1">
+                          {interests && interests.length > 0 ? (
+                            interests.map((interest, index) => (
+                              <span key={index} className="px-2 py-1 bg-primary/10 text-primary rounded-full text-xs">
+                                {interest}
+                              </span>
+                            ))
+                          ) : (
+                            <p className="text-gray-500">No interests specified</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-end">
+                  <Button onClick={() => setIsProfileOpen(false)}>Close</Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+            
+            <a href="#" className="nav-link flex items-center gap-2" onClick={handleLogout}>
+              <LogOut className="w-4 h-4" />
+              <span>Logout</span>
             </a>
           </div>
           
-          <div className="flex items-center space-x-4">
-            <button className="relative">
-              <Bell className="h-5 w-5 text-gray-600" />
-              <span className="absolute -top-1 -right-1 bg-primary rounded-full w-4 h-4 text-xs flex items-center justify-center text-white">3</span>
-            </button>
-            
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleLogout}
-              className="hidden md:flex items-center gap-2"
-            >
-              <LogOut className="h-4 w-4" />
-              Logout
-            </Button>
-          </div>
+          {/* Mobile menu button */}
+          <button className="md:hidden text-gray-600 hover:text-primary focus:outline-none">
+            <Menu size={24} />
+          </button>
         </div>
       </nav>
       

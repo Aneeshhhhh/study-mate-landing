@@ -1,12 +1,22 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Menu, X, LogIn } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
+  const handleSignup = () => {
+    navigate('/signup');
   };
 
   return (
@@ -35,12 +45,20 @@ const Navbar = () => {
 
         {/* Auth Buttons */}
         <div className="hidden md:flex space-x-4">
-          <Link to="/login" className="btn-secondary">
-            Log In
-          </Link>
-          <Link to="/signup" className="btn-primary">
-            Sign Up
-          </Link>
+          <Button 
+            variant="outline" 
+            className="flex items-center gap-2"
+            onClick={handleLogin}
+          >
+            <LogIn className="h-4 w-4" />
+            <span>Log In</span>
+          </Button>
+          <Button 
+            className="flex items-center gap-2"
+            onClick={handleSignup}
+          >
+            <span>Sign Up</span>
+          </Button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -67,12 +85,20 @@ const Navbar = () => {
               <a href="#contact" className="block nav-link">
                 Contact
               </a>
-              <Link to="/login" className="block btn-secondary">
-                Log In
-              </Link>
-              <Link to="/signup" className="block btn-primary">
-                Sign Up
-              </Link>
+              <Button 
+                variant="outline" 
+                className="flex items-center justify-center gap-2 w-full"
+                onClick={handleLogin}
+              >
+                <LogIn className="h-4 w-4" />
+                <span>Log In</span>
+              </Button>
+              <Button 
+                className="flex items-center justify-center gap-2 w-full"
+                onClick={handleSignup}
+              >
+                <span>Sign Up</span>
+              </Button>
             </div>
           </div>
         )}

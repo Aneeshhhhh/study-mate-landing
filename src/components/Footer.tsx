@@ -1,4 +1,3 @@
-
 import { Mail, Twitter, Github } from "lucide-react";
 
 const Footer = () => {
@@ -33,8 +32,7 @@ const Footer = () => {
         <div className="mt-8 pt-6 border-t border-gray-200 text-center text-gray-500 text-sm">
           <p>© 2025 StudySync. All rights reserved.</p>
           <p className="mt-1 text-xs text-gray-400">
-            {/* Easter egg for hackathon judges */}
-            🚀 Built for Hackathon Challenge by Team StudySync
+            Built for Technomela by Vortex
           </p>
         </div>
       </div>

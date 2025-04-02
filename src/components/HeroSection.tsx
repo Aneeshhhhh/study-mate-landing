@@ -9,6 +9,13 @@ const HeroSection = () => {
     setIsVisible(true);
   }, []);
 
+  const scrollToAbout = () => {
+    const aboutSection = document.getElementById('about');
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <section 
       id="home" 
@@ -27,7 +34,10 @@ const HeroSection = () => {
             <Link to="/signup" className="btn-primary animate-pulse-glow">
               Login/Signup
             </Link>
-            <button className="btn-secondary hover:scale-[1.02]">
+            <button 
+              onClick={scrollToAbout}
+              className="btn-secondary hover:scale-[1.02]"
+            >
               How It Works <ChevronRight className="inline ml-1" size={18} />
             </button>
           </div>
