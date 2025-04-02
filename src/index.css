@@ -82,7 +82,7 @@
 
   .btn-secondary {
     @apply bg-transparent border border-secondary text-secondary px-6 py-3
-    rounded-lg font-semibold hover:scale-102 transition-all duration-300
+    rounded-lg font-semibold hover:scale-[1.02] transition-all duration-300
     focus:outline-none;
   }
 
