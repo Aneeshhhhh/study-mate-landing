@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   BookOpen, Users, Upload, Search, Bell, LogOut, MessageSquare,
@@ -9,14 +8,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { useSignup } from "@/contexts/SignupContext";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
+  const { name } = useSignup();
+  const [userName, setUserName] = useState("there");
   
   // In a real app, this would come from authentication state
   const isStudent = true;
+  
+  useEffect(() => {
+    // Set the user's name from the signup context
+    if (name) {
+      setUserName(name);
+    }
+  }, [name]);
   
   const handleLogout = () => {
     toast({
@@ -49,6 +58,22 @@ const Dashboard = () => {
         }, 2000);
       }
     };
+  };
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      // Navigate to the appropriate search page based on the query
+      if (searchQuery.toLowerCase().includes('tutor')) {
+        navigate('/search-tutors');
+      } else if (searchQuery.toLowerCase().includes('buddy') || searchQuery.toLowerCase().includes('study')) {
+        navigate('/search-buddies');
+      } else if (searchQuery.toLowerCase().includes('partner') || searchQuery.toLowerCase().includes('campus')) {
+        navigate('/search-partners');
+      } else {
+        // Default to tutors search if no specific keyword is found
+        navigate('/search-tutors');
+      }
+    }
   };
 
   return (
@@ -98,7 +123,7 @@ const Dashboard = () => {
       <div className="container mx-auto pt-24 pb-12 px-4">
         {/* Welcome Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Welcome back, Sarah!</h1>
+          <h1 className="text-3xl font-bold mb-2">Welcome back, {userName}!</h1>
           <p className="text-gray-600">Ready to connect and learn today?</p>
         </div>
         
@@ -111,7 +136,19 @@ const Dashboard = () => {
             className="pl-10 pr-4 py-2 rounded-lg border-gray-300 w-full"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch();
+              }
+            }}
           />
+          <Button 
+            className="absolute right-2 top-1/2 transform -translate-y-1/2"
+            size="sm"
+            onClick={handleSearch}
+          >
+            Search
+          </Button>
         </div>
         
         {/* Student Dashboard */}
@@ -131,7 +168,10 @@ const Dashboard = () => {
                 </p>
               </CardContent>
               <CardFooter>
-                <Button className="w-full bg-primary hover:bg-primary/90 text-white">
+                <Button 
+                  className="w-full bg-primary hover:bg-primary/90 text-white"
+                  onClick={() => navigate('/search-tutors')}
+                >
                   Find Tutors
                 </Button>
               </CardFooter>
@@ -151,8 +191,34 @@ const Dashboard = () => {
                 </p>
               </CardContent>
               <CardFooter>
-                <Button className="w-full bg-primary hover:bg-primary/90 text-white">
+                <Button 
+                  className="w-full bg-primary hover:bg-primary/90 text-white"
+                  onClick={() => navigate('/search-buddies')}
+                >
                   Match Now
+                </Button>
+              </CardFooter>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Users className="h-5 w-5 text-primary" />
+                  Find a Campus Partner
+                </CardTitle>
+                <CardDescription>Connect for activities and events</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-600">
+                  Find partners for sports, clubs, and campus activities.
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Button 
+                  className="w-full bg-primary hover:bg-primary/90 text-white"
+                  onClick={() => navigate('/search-partners')}
+                >
+                  Find Partners
                 </Button>
               </CardFooter>
             </Card>
