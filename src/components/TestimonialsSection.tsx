@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 
 interface Testimonial {
@@ -11,15 +10,15 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     quote: "I aced my finals thanks to StudySync!",
-    name: "Alex",
+    name: "Aneesh Puranik",
     affiliation: "MIT '25",
     avatar: "https://i.pravatar.cc/100?img=1"
   },
   {
     quote: "Met my startup co-founder here!",
-    name: "Priya",
+    name: "Aryan Tambe",
     affiliation: "Stanford '26",
-    avatar: "https://i.pravatar.cc/100?img=5"
+    avatar: "https://i.pravatar.cc/100?img=3"
   }
 ];
 

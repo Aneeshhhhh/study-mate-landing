@@ -1,6 +1,6 @@
-
 import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -24,9 +24,9 @@ const HeroSection = () => {
             AI-matched tutors • Accountability partners • Campus friends.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button className="btn-primary animate-pulse-glow">
-              Find Your Match
-            </button>
+            <Link to="/signup" className="btn-primary animate-pulse-glow">
+              Login/Signup
+            </Link>
             <button className="btn-secondary hover:scale-[1.02]">
               How It Works <ChevronRight className="inline ml-1" size={18} />
             </button>

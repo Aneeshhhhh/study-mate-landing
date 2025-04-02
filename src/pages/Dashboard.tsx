@@ -2,13 +2,15 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   BookOpen, Users, Upload, Search, Bell, LogOut, MessageSquare,
-  Calendar, User
+  Calendar, User, X, ArrowLeft
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useSignup } from "@/contexts/SignupContext";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -16,6 +18,12 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const { name } = useSignup();
   const [userName, setUserName] = useState("there");
+  const [messageText, setMessageText] = useState("");
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isMessageOpen, setIsMessageOpen] = useState(false);
+  const [messageSearchQuery, setMessageSearchQuery] = useState("");
+  const [selectedUser, setSelectedUser] = useState<{id: number, name: string, image: string} | null>(null);
+  const [showMessageBox, setShowMessageBox] = useState(false);
   
   // In a real app, this would come from authentication state
   const isStudent = true;
@@ -46,16 +54,8 @@ const Dashboard = () => {
       if (files && files.length > 0) {
         toast({
           title: "PDF Uploaded",
-          description: "We're analyzing your document...",
+          description: "Please wait for the ML model to start processing",
         });
-        
-        // Simulate PDF processing
-        setTimeout(() => {
-          toast({
-            title: "Analysis Complete",
-            description: "Summary and quiz generated!",
-          });
-        }, 2000);
       }
     };
   };
@@ -76,6 +76,51 @@ const Dashboard = () => {
     }
   };
 
+  const handleSendMessage = () => {
+    if (messageText.trim() && selectedUser) {
+      toast({
+        title: "Message sent",
+        description: `Your message has been sent to ${selectedUser.name}.`,
+      });
+      setMessageText("");
+      setSelectedUser(null);
+      setShowMessageBox(false);
+      setIsMessageOpen(false);
+    }
+  };
+
+  const handleSelectUser = (user: {id: number, name: string, image: string}) => {
+    setSelectedUser(user);
+    setShowMessageBox(true);
+  };
+
+  const handleBackToSearch = () => {
+    setSelectedUser(null);
+    setShowMessageBox(false);
+  };
+
+  // Mock calendar events
+  const calendarEvents = [
+    { id: 1, title: "Study Session with Aneesh", date: "2023-06-15", time: "10:00 AM - 11:30 AM" },
+    { id: 2, title: "Tutoring Session - Python", date: "2023-06-16", time: "2:00 PM - 3:00 PM" },
+    { id: 3, title: "Campus Partner Meetup", date: "2023-06-18", time: "5:00 PM - 6:00 PM" },
+    { id: 4, title: "Group Study - Data Science", date: "2023-06-20", time: "1:00 PM - 3:00 PM" },
+  ];
+
+  // Mock users for messaging
+  const mockUsers = [
+    { id: 1, name: "Aneesh Puranik", image: "https://i.pravatar.cc/150?img=1" },
+    { id: 2, name: "Aryan Tambe", image: "https://i.pravatar.cc/150?img=2" },
+    { id: 3, name: "Om Kute", image: "https://i.pravatar.cc/150?img=3" },
+    { id: 4, name: "Emily Rodriguez", image: "https://i.pravatar.cc/150?img=4" },
+    { id: 5, name: "David Wilson", image: "https://i.pravatar.cc/150?img=5" },
+  ];
+
+  // Filter users based on search query
+  const filteredUsers = mockUsers.filter(user => 
+    user.name.toLowerCase().includes(messageSearchQuery.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-white to-accent-light/10">
       {/* Navbar */}
@@ -86,14 +131,129 @@ const Dashboard = () => {
           </div>
           
           <div className="hidden md:flex items-center space-x-6">
-            <a href="#" className="nav-link flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              <span>Schedule</span>
-            </a>
-            <a href="#" className="nav-link flex items-center gap-2">
-              <MessageSquare className="w-4 h-4" />
-              <span>Messages</span>
-            </a>
+            <Dialog open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+              <DialogTrigger asChild>
+                <a href="#" className="nav-link flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <span>Schedule</span>
+                </a>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[500px]">
+                <DialogHeader>
+                  <DialogTitle>Your Schedule</DialogTitle>
+                </DialogHeader>
+                <div className="py-4">
+                  <div className="space-y-4">
+                    {calendarEvents.map((event) => (
+                      <div key={event.id} className="border rounded-lg p-4 hover:bg-gray-50">
+                        <h3 className="font-medium">{event.title}</h3>
+                        <p className="text-sm text-gray-600">{event.date} | {event.time}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex justify-end">
+                  <Button onClick={() => setIsCalendarOpen(false)}>Close</Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+            
+            <Dialog open={isMessageOpen} onOpenChange={(open) => {
+              setIsMessageOpen(open);
+              if (!open) {
+                // Reset state when dialog is closed
+                setSelectedUser(null);
+                setShowMessageBox(false);
+                setMessageText("");
+              }
+            }}>
+              <DialogTrigger asChild>
+                <a href="#" className="nav-link flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4" />
+                  <span>Messages</span>
+                </a>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[500px]">
+                <DialogHeader>
+                  <DialogTitle>
+                    {showMessageBox && selectedUser ? (
+                      <div className="flex items-center gap-2">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={handleBackToSearch}
+                          className="h-8 w-8"
+                        >
+                          <ArrowLeft className="h-4 w-4" />
+                        </Button>
+                        <span>Message to {selectedUser.name}</span>
+                      </div>
+                    ) : (
+                      "Find a User to Message"
+                    )}
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="py-4">
+                  {!showMessageBox ? (
+                    <>
+                      <div className="relative mb-4">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <Input
+                          type="text"
+                          placeholder="Search for a user..."
+                          className="pl-10 pr-4 py-2 rounded-lg border-gray-300 w-full"
+                          value={messageSearchQuery}
+                          onChange={(e) => setMessageSearchQuery(e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                        {filteredUsers.length > 0 ? (
+                          filteredUsers.map((user) => (
+                            <div 
+                              key={user.id} 
+                              className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"
+                              onClick={() => handleSelectUser(user)}
+                            >
+                              <img 
+                                src={user.image} 
+                                alt={user.name} 
+                                className="w-10 h-10 rounded-full"
+                              />
+                              <span className="font-medium">{user.name}</span>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="text-center py-4 text-gray-500">
+                            No users found. Try a different search term.
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <div>
+                      <div className="flex items-center gap-3 mb-4 p-3 border rounded-lg">
+                        <img 
+                          src={selectedUser?.image} 
+                          alt={selectedUser?.name} 
+                          className="w-10 h-10 rounded-full"
+                        />
+                        <span className="font-medium">{selectedUser?.name}</span>
+                      </div>
+                      <Textarea
+                        placeholder="Type your message here..."
+                        className="min-h-[150px] mb-4"
+                        value={messageText}
+                        onChange={(e) => setMessageText(e.target.value)}
+                      />
+                      <div className="flex justify-end">
+                        <Button onClick={handleSendMessage}>Send Message</Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </DialogContent>
+            </Dialog>
+            
             <a href="#" className="nav-link flex items-center gap-2">
               <User className="w-4 h-4" />
               <span>Profile</span>
